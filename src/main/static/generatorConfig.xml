@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+    <!-- 引入配置文件 -->
+    <!--<properties resource="../../generatorConfig.properties"/>-->
+    <properties resource="generatorConfig.properties"/>
+
+    <!-- oralce -->
+    <context id="mybatis" targetRuntime="MyBatis3" >
+        <property name="javaFileEncoding" value="UTF-8"/>
+
+        <!-- 官方提供的插件 -->
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+        <!--<plugin type="com.tmdaq.ces.generator.plugin.CheckColumnPlugin" />-->
+        <!--&lt;!&ndash; 扩展的插件 &ndash;&gt;-->
+        <!--<plugin type="com.tmdaq.ces.generator.plugin.IgnorePlugin" />-->
+        <!--<plugin type="com.tmdaq.ces.generator.plugin.SimpleListPagePlugin" />-->
+        <!--<plugin type="com.tmdaq.ces.generator.plugin.RemoveListPlugin" />-->
+        <!--<plugin type="com.tmdaq.ces.generator.plugin.SelectListByIdsPlugin" />-->
+        <!--<plugin type="com.tmdaq.ces.generator.plugin.BeanRemarkPlugin" />-->
+        <!--&lt;!&ndash;&lt;!&ndash; xxxTemplate 代表是调用 freemarker 生成的文件 &ndash;&gt;&ndash;&gt;-->
+        <!--<plugin type="com.tmdaq.ces.generator.plugin.ControllerTemplate" />-->
+        <!--<plugin type="com.tmdaq.ces.generator.plugin.ServiceTemplate" />-->
+        <!--<plugin type="com.tmdaq.ces.generator.plugin.ServiceImplTemplate" />-->
+        <!--<plugin type="com.tmdaq.ces.generator.plugin.EditPageTemplate" />-->
+        <!--<plugin type="com.tmdaq.ces.generator.plugin.ListPageTemplate" />-->
+        <!--&lt;!&ndash;<plugin type="com.tmdaq.ces.generator.plugin.BatchUpdate" />&ndash;&gt;-->
+
+        <plugin type="com.tmdaq.ces.generator.plugin.IgnorePlugin" />
+        <plugin type="com.tmdaq.ces.generator.plugin.SetterPlugin" />
+        <plugin type="com.tmdaq.ces.generator.plugin.BeanRemarkPlugin" />
+        <plugin type="com.tmdaq.ces.generator.plugin.DateFieldPlugin" />
+        <plugin type="com.tmdaq.ces.generator.plugin.ListPagePlugin" />
+        <plugin type="com.tmdaq.ces.generator.plugin.template.SingleTemplate" />
+        <plugin type="com.tmdaq.ces.generator.plugin.template.DualTemplate" />
+        <plugin type="com.tmdaq.ces.generator.plugin.template.WorkFlowTemplate" />
+
+
+        <commentGenerator>
+            <property name="suppressDate" value="true"/>
+            <property name="suppressAllComments" value="true" />
+        </commentGenerator>
+        <!-- 数据库连接 -->
+        <jdbcConnection
+                driverClass="${driverClass}"
+                connectionURL="${connectionURL}"
+                userId="${userId}"
+                password="${password}">
+        </jdbcConnection>
+        <!-- model -->
+        <javaModelGenerator
+                targetPackage="com.cesgroup.prison.platform.yzgl.sjgl.ynfl.entity"
+                targetProject="src/main/java" />
+        <!-- mapper.xml -->
+        <sqlMapGenerator
+                targetPackage="com"
+                targetProject="src/main/java" />
+        <!-- dao或mapper接口 -->
+        <javaClientGenerator
+                targetPackage="com.cesgroup.prison.platform.yzgl.sjgl.ynfl.dao"
+                targetProject="src/main/java"
+                type="XMLMAPPER"/>
+
+        <!-- ==================== 表配置 start ==================== -->
+
+        <!-- 1.单表配置（单表 和 多表 二选一）-->
+        <table tableName="test_user" domainObjectName="Test" schema="demo"/>
+
+        <!-- 2.多表配置（单表 和 多表 二选一）-->
+        <!-- 注意：子表在上，主表在下-->
+        <!--<table tableName="T_YZGL_XS_ZYWP_MX" domainObjectName="ZywpMx" schema="YZGL"/>-->
+        <!--<table tableName="T_YZGL_XS_ZYWP" domainObjectName="Zywp" schema="YZGL"/>-->
+
+        <!-- ==================== 表配置 end ==================== -->
+
+    </context>
+</generatorConfiguration>
