@@ -20,3 +20,19 @@ jobs:
       with:
         # Sonar-scanner version
         version: 4.2.0.1873 # default is 4.2.0.1873
+    - name: Send mail
+      uses: dawidd6/action-send-mail@master
+      with:
+        server_address: smtp.tmdaq.com
+        server_port: 465
+        username: ${{secrets.MAIL_USERNAME}}
+        password: ${{secrets.MAIL_PASSWORD}}
+        subject: ${{github.repository}} 构建结果
+        # Literal body:
+        body: ${{github.repository}} 构建成功
+        # Read file contents as body:
+        # body: file://README.md
+        to: vttmlin@tmdaq.com
+        from: Luke Skywalker
+        # Optional content type:
+        content_type: text/html
