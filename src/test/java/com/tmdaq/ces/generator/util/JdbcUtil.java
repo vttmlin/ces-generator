@@ -9,7 +9,7 @@ import java.sql.Statement;
 import java.util.Properties;
 
 public class JdbcUtil {
-    private static final Properties PROPERTIES = load();
+    static final Properties PROPERTIES = load();
 
     @SneakyThrows
     public static Connection getConnection() {
@@ -19,17 +19,17 @@ public class JdbcUtil {
     @SneakyThrows
     public static Properties load() {
         Properties properties = new Properties();
-        properties.load(JdbcUtil.class.getResourceAsStream("db.properties"));
+        properties.load(JdbcUtil.class.getResourceAsStream("/db.properties"));
         return properties;
     }
 
     @SneakyThrows
-    public Statement getStatement() {
+    public static Statement getStatement() {
         return getConnection().createStatement();
     }
 
     @SneakyThrows
-    public PreparedStatement getStatement(String sql) {
+    public static PreparedStatement getStatement(String sql) {
         return getConnection().prepareStatement(sql);
     }
 }

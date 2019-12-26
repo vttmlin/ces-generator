@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static com.tmdaq.ces.generator.api.Const.PATH;
 import static com.tmdaq.ces.generator.api.Mode.SINGLE;
 import static com.tmdaq.ces.generator.api.SystemUtil.getInstance;
 import static java.io.File.separator;
@@ -37,7 +38,7 @@ public class SingleTemplate extends TemplatePlugin {
             map.putIfAbsent("objectNameLower", objectNameLower);
             // 直接生成
 //            controller上的注解 前台页面的请求地址
-            final String path = getInstance.getConfig("path." + tableConfiguration.getTableName());
+            final String path = getInstance.getConfig(PATH + tableConfiguration.getTableName());
             map.putIfAbsent("path", path);
 
             String packageName = topLevelClass.getType().getPackageName();
@@ -71,16 +72,6 @@ public class SingleTemplate extends TemplatePlugin {
             try {
                 String realName = fileName.substring(fileName.indexOf('-') + 1, fileName.length() - 4).replace("{}", topLevelClass.getType().getShortName());
                 String outPath;
-//                String packageName;
-//                    if (realName.startsWith("I" + topLevelClass.getType().getShortName())) {
-//                        packageName = data.get("servicePackageName").toString();
-//                    } else if (realName.startsWith(topLevelClass.getType().getShortName() + "Service")) {
-//                            packageName = data.get("serviceImplPackageName").toString();
-//                        }else if (realName.startsWith(topLevelClass.getType().getShortName() + "Controller")) {
-//                            packageName = data.get("controllerPackageName").toString();
-//                        } else {
-//                            outPath = Stream.of(getOutPutPath(), realName).collect(joining(File.separator));
-//                        }
                 if (realName.endsWith(".java")) {
                     String packageName;
                     if (realName.startsWith("I" + topLevelClass.getType().getShortName())) {
@@ -95,7 +86,7 @@ public class SingleTemplate extends TemplatePlugin {
                     outPath = Stream.of(getOutPutPath(), realName).collect(joining(separator));
                 }
                 File file = new File(outPath);
-                if(!file.getParentFile().exists()){
+                if (!file.getParentFile().exists()) {
                     file.getParentFile().mkdirs();
                 }
                 getConfiguration().getTemplate(fileName).process(data, new FileWriter(file));

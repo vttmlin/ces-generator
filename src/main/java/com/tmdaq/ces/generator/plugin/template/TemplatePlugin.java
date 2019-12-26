@@ -18,23 +18,25 @@ import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
 public abstract class TemplatePlugin extends BasePlugin {
-    protected static Map<Mode, TemplatePlugin> cache = new HashMap<>();
-
     protected static final String EXT = ".ftl";
+    protected static Map<Mode, TemplatePlugin> cache = new HashMap<>();
     protected static Map<String, Object> data = new HashMap<>();
     private static String userDir = System.getProperty("user.dir");
-    private Version version = Configuration.VERSION_2_3_29;
-
+    protected static String outPutPath = Stream.of(userDir, "src", "main", "java").collect(joining(separator));
     protected Mode mode = SystemUtil.getInstance.getMode();
-
-//    文件命名规则 {mode}-service.java.ftl
-
-    protected String getOutPutPath() {
-        return Stream.of(userDir, "src", "main", "java").collect(joining(separator));
-    }
+    private Version version = Configuration.VERSION_2_3_29;
 
     protected String getTemplatePath() {
         return Stream.of(userDir, "src", "main", "resources").collect(joining(separator));
+    }
+
+    public String getOutPutPath() {
+        String devMode = System.getProperty("devMode");
+        if (Objects.equals("", devMode)) {
+            return outPutPath;
+        } else {
+            return devMode;
+        }
     }
 
     /**

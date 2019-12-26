@@ -64,7 +64,7 @@
         <!-- ==================== 表配置 start ==================== -->
 
         <!-- 1.单表配置（单表 和 多表 二选一）-->
-        <table tableName="test_user" domainObjectName="Test" schema="demo"/>
+        <table tableName="test_user" domainObjectName="Test"/>
 
         <!-- 2.多表配置（单表 和 多表 二选一）-->
         <!-- 注意：子表在上，主表在下-->
