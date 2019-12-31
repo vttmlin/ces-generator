@@ -1,16 +1,14 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="ces-generator">
-    <test name="base">
+    <test name="single">
+        <parameter name="mode" value="SINGLE"/>
         <classes>
-            <class name="com.tmdaq.ces.generator.api.ConstTest">
+            <class name="com.tmdaq.ces.generator.plugin.template.SingleTemplateTest">
                 <methods>
-                    <include name="testGetOutPath"/>
+                    <include name="testGenerator"/>
                 </methods>
             </class>
         </classes>
-    </test>
-    <test name="single">
-        <parameter name="mode" value="SINGLE"/>
     </test>
     <test name="dual">
         <parameter name="mode" value="DUAL"/>

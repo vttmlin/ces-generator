@@ -1,19 +1,26 @@
 package com.tmdaq.testng.util;
 
 import com.tmdaq.ces.generator.api.Mode;
+import com.tmdaq.ces.generator.util.ConfigurationUtil;
 import com.tmdaq.ces.generator.util.JdbcUtil;
+import com.tmdaq.toolbox.ReflectionUtils;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
+import org.mybatis.generator.config.Configuration;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
+import org.testng.ITestResult;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.Statement;
 
 import static org.testng.Assert.assertNotNull;
 
 public class InitTestCase implements ITestListener {
+
+    private Configuration configuration;
 
     @Override
     @SneakyThrows
@@ -38,6 +45,14 @@ public class InitTestCase implements ITestListener {
             default:
                 throw new RuntimeException();
         }
-        connection.close();
+    }
+
+    @Override
+    @SneakyThrows
+    public void onTestStart(ITestResult result) {
+        Class realClass = result.getMethod().getRealClass();
+        Object instance = result.getMethod().getInstance();
+        Field configuration = realClass.getSuperclass().getDeclaredField("configuration");
+        ReflectionUtils.setFieldValue(configuration, instance, ConfigurationUtil.getConfiguration("T_XFZX_SW_SWDJ", "Swdj", "XFZX"));
     }
 }

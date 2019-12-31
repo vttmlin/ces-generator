@@ -17,9 +17,6 @@ public class SystemUtil {
     public static final SystemUtil getInstance = new SystemUtil();
     private static final Logger log = LoggerFactory.getLogger(ReflectionUtils.class);
     private static final Map<String, String> CONFIG_MAP = load();
-    private SystemUtil() {
-        throw new UnsupportedOperationException("无效的方法调用");
-    }
 
     private static Map<String, String> load() {
         String property = System.getProperty("user.dir");
