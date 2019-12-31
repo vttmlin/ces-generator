@@ -45,6 +45,7 @@ public class ConfigurationUtil {
     private static JavaClientGeneratorConfiguration getJavaClientGeneratorConfiguration() {
         JavaClientGeneratorConfiguration configuration = new JavaClientGeneratorConfiguration();
         configuration.setTargetPackage("com.cesgroup.prison.platform.yzgl.sjgl.ynfl.dao");
+//        configuration.setTargetProject("src/main/java");
         configuration.setTargetProject("src/main/java");
         configuration.setConfigurationType("XMLMAPPER");
         return configuration;
@@ -53,14 +54,16 @@ public class ConfigurationUtil {
     private static SqlMapGeneratorConfiguration getSqlMapGeneratorConfiguration() {
         SqlMapGeneratorConfiguration configuration = new SqlMapGeneratorConfiguration();
         configuration.setTargetPackage("com");
-        configuration.setTargetProject("src/main/java");
+//        configuration.setTargetProject("src/main/java");
+        configuration.setTargetProject("out");
         return configuration;
     }
 
     private static JavaModelGeneratorConfiguration getJavaModelGeneratorConfiguration() {
         JavaModelGeneratorConfiguration configuration = new JavaModelGeneratorConfiguration();
         configuration.setTargetPackage("com.cesgroup.prison.platform.yzgl.sjgl.ynfl.entity");
-        configuration.setTargetProject("src/main/java");
+//        configuration.setTargetProject("src/main/java");
+        configuration.setTargetProject("out");
         return configuration;
     }
 

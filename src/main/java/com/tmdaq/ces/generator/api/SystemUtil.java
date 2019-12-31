@@ -1,5 +1,9 @@
 package com.tmdaq.ces.generator.api;
 
+import com.tmdaq.toolbox.ReflectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -11,18 +15,10 @@ import static java.util.stream.Collectors.toMap;
 
 public class SystemUtil {
     public static final SystemUtil getInstance = new SystemUtil();
+    private static final Logger log = LoggerFactory.getLogger(ReflectionUtils.class);
     private static final Map<String, String> CONFIG_MAP = load();
-
-    /**
-     * @return 返回当前生成策略 默认单表生成
-     */
-    public Mode getMode() {
-        Object mode = getConfig("mode");
-        return Objects.nonNull(mode) ? Mode.valueOf(mode.toString()) : SINGLE;
-    }
-
     private SystemUtil() {
-
+        throw new UnsupportedOperationException("无效的方法调用");
     }
 
     private static Map<String, String> load() {
@@ -34,7 +30,8 @@ public class SystemUtil {
             Properties properties = new Properties();
             try {
                 properties.load(new FileInputStream(file));
-            } catch (IOException ignored) {
+            } catch (IOException e) {
+                log.error("{}", e);
             }
             return properties.entrySet()
                     .stream()
@@ -43,7 +40,6 @@ public class SystemUtil {
         }).forEach(map::putAll);
         return map;
     }
-
 
     private static void getAllFile(File file, Predicate<File> predicate, List<File> result) {
         if (file.isDirectory()) {
@@ -57,6 +53,14 @@ public class SystemUtil {
                 result.add(file);
             }
         }
+    }
+
+    /**
+     * @return 返回当前生成策略 默认单表生成
+     */
+    public Mode getMode() {
+        Object mode = getConfig("mode");
+        return Objects.nonNull(mode) ? Mode.valueOf(mode.toString()) : SINGLE;
     }
 
     public String getConfig(String key) {

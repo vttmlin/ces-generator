@@ -1,0 +1,26 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="ces-generator">
+    <test name="base">
+        <classes>
+            <class name="com.tmdaq.ces.generator.api.ConstTest">
+                <methods>
+                    <include name="testGetOutPath"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="single">
+        <parameter name="mode" value="SINGLE"/>
+    </test>
+    <test name="dual">
+        <parameter name="mode" value="DUAL"/>
+        <classes></classes>
+    </test>
+    <test name="workflow">
+        <parameter name="mode" value="WORKFLOW"/>
+        <classes></classes>
+    </test>
+    <listeners>
+        <listener class-name="com.tmdaq.testng.util.InitTestCase"/>
+    </listeners>
+</suite>
