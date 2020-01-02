@@ -24,7 +24,9 @@ public class ConfigurationUtil {
             "com.tmdaq.ces.generator.plugin.BeanRemarkPlugin",
             "com.tmdaq.ces.generator.plugin.DateFieldPlugin",
             "com.tmdaq.ces.generator.plugin.ListPagePlugin",
-            "com.tmdaq.ces.generator.plugin.template.SingleTemplate"
+            "com.tmdaq.ces.generator.plugin.template.SingleTemplate",
+            "com.tmdaq.ces.generator.plugin.template.DualTemplate",
+            "com.tmdaq.ces.generator.plugin.template.WorkFlowTemplate"
     };
 
     public static Configuration getConfiguration(String tableName, String objectName, String schema) {

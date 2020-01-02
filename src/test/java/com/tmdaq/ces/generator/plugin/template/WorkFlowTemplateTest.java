@@ -12,10 +12,10 @@ import java.util.List;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 
-public class SingleTemplateTest extends BaseTest {
+public class WorkFlowTemplateTest extends BaseTest {
 
     @Test
-    @TableConfig(tableName = "T_XFZX_SW_SWDJ", objectName = "Swdj", schema = "XFZX")
+    @TableConfig(tableName = "T_XFZX_YLGL_LBCRD_LC", schema = "XFZX", objectName = "LbcCx")
     public void testGenerator() throws Exception {
         MyBatisGenerator myBatisGenerator = new MyBatisGenerator(configuration, callback, warnings);
         myBatisGenerator.generate(null);
@@ -25,6 +25,5 @@ public class SingleTemplateTest extends BaseTest {
         assertFalse(javaFiles.isEmpty());
         assertNotNull(xmlFiles);
         assertFalse(xmlFiles.isEmpty());
-        System.err.println(warnings);
     }
 }

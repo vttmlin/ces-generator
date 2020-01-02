@@ -64,4 +64,7 @@ public class SystemUtil {
         return CONFIG_MAP.get(key);
     }
 
+    public void put(String key, String value) {
+        CONFIG_MAP.put(key, value);
+    }
 }

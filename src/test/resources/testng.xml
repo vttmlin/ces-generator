@@ -16,7 +16,13 @@
     </test>
     <test name="workflow">
         <parameter name="mode" value="WORKFLOW"/>
-        <classes></classes>
+        <classes>
+            <class name="com.tmdaq.ces.generator.plugin.template.WorkFlowTemplateTest">
+                <methods>
+                    <include name="testGenerator"/>
+                </methods>
+            </class>
+        </classes>
     </test>
     <listeners>
         <listener class-name="com.tmdaq.testng.util.InitTestCase"/>

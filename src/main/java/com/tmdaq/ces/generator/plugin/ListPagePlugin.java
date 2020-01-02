@@ -29,6 +29,22 @@ public class ListPagePlugin extends BasePlugin {
         method.addParameter(record);
         interfaze.addMethod(method);
         interfaze.addImportedType(new FullyQualifiedJavaType("java.util.List"));
+        Mode mode = SystemUtil.getInstance.getMode();
+        switch (mode) {
+            case SINGLE:
+                break;
+            case DUAL:
+                break;
+            case WORKFLOW:
+                Method selectListMap = new Method(METHOD_NAME + "Map");
+                selectListMap.setReturnType(new FullyQualifiedJavaType("List<Map<String,Object>>"));
+                interfaze.addImportedType(new FullyQualifiedJavaType("java.util.Map"));
+                selectListMap.addParameter(record);
+                interfaze.addMethod(selectListMap);
+                break;
+            default:
+                throw new UnsupportedOperationException();
+        }
         return true;
     }
 
@@ -60,13 +76,15 @@ public class ListPagePlugin extends BasePlugin {
                 listPage.addElement(new TextElement("<include refid=\"base_where\" />\n"));
 
                 XmlElement selectListMap = new XmlElement("select");
-                selectListMap.addAttribute(new Attribute("id", METHOD_NAME));
+                selectListMap.addAttribute(new Attribute("id", METHOD_NAME + "Map"));
                 selectListMap.addAttribute(new Attribute("resultType", "java.util.Map"));
                 selectListMap.addElement(new TextElement(
                         String.format("select \n      <include refid=\"Base_Column_List\" />\n" +
                                         "    from %s.%s where C_SCBZ='N' ",
                                 introspectedTable.getTableConfiguration().getSchema(), introspectedTable.getTableConfiguration().getTableName())));
                 selectListMap.addElement(new TextElement("<include refid=\"base_where\" />\n"));
+                selectListMap.addElement(new TextElement("and ( PROCESS_INSTANCE_ID is null or PROCESS_INSTANCE_ID='' )"));
+                document.getRootElement().addElement(selectListMap);
                 break;
             default:
                 throw new UnsupportedOperationException();
@@ -78,7 +96,8 @@ public class ListPagePlugin extends BasePlugin {
     private List<XmlElement> getWhere(IntrospectedTable introspectedTable) {
         Predicate<IntrospectedColumn> predicate = getPredicate(
                 introspectedColumn -> !Objects.equals("cScbz", introspectedColumn.getJavaProperty()),
-                introspectedColumn -> !Objects.equals("jqId", introspectedColumn.getJavaProperty())
+                introspectedColumn -> !Objects.equals("jqId", introspectedColumn.getJavaProperty()),
+                introspectedColumn -> !Objects.equals("xm", introspectedColumn.getJavaProperty())
 
         );
         List<XmlElement> result = introspectedTable.getBaseColumns().stream().filter(predicate).flatMap(introspectedColumn -> Arrays.stream(getXmlElement(introspectedColumn))).collect(Collectors.toList());
@@ -86,6 +105,15 @@ public class ListPagePlugin extends BasePlugin {
         jqId.addAttribute(new Attribute("test", "jqId !=null and jqId !='' "));
         jqId.addElement(new TextElement(" AND JQ_ID like concat(#{jqId,jdbcType=VARCHAR},'%')"));
         result.add(jqId);
+        introspectedTable.getBaseColumns().stream().filter(introspectedColumn -> introspectedColumn.getJavaProperty().equalsIgnoreCase("xm")).findFirst().ifPresent(introspectedColumn -> {
+            XmlElement xm = new XmlElement("if");
+            xm.addAttribute(new Attribute("test", "xm !=null and xm !='' "));
+            xm.addElement(new TextElement(" AND (XM like concat( '%',#{xm,jdbcType=VARCHAR}, '%')\n" +
+                    "      or BH like concat( '%',#{xm,jdbcType=VARCHAR}, '%')\n" +
+                    "      or XM_SZM like concat( '%',#{xm,jdbcType=VARCHAR}, '%')\n" +
+                    "      )"));
+            result.add(xm);
+        });
         return result;
     }
 
