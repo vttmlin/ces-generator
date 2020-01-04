@@ -11,32 +11,24 @@ import org.mybatis.generator.api.dom.java.TopLevelClass;
 
 import java.io.File;
 import java.util.*;
-import java.util.stream.Stream;
 
-import static com.tmdaq.ces.generator.api.Const.USER_DIR;
-import static java.io.File.separator;
-import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
 public abstract class TemplatePlugin extends BasePlugin {
     protected static final String EXT = ".ftl";
+    public static Map<String, String> FILE_MAPPING = new HashMap<>();
     protected static Map<Mode, TemplatePlugin> cache = new HashMap<>();
     protected static Map<String, Object> data = new HashMap<>();
-    protected static String outPutPath = Stream.of(USER_DIR, "src", "main", "java").collect(joining(separator));
+
+    static {
+//        getTemplateStringList().stream()
+    }
+
     protected Mode mode = SystemUtil.getInstance.getMode();
     private Version version = Configuration.VERSION_2_3_29;
 
-    protected String getTemplatePath() {
-        return Stream.of(USER_DIR, "src", "main", "resources").collect(joining(separator));
-    }
-
-    public String getOutPutPath() {
-        String devMode = System.getProperty("devMode");
-        if (Objects.equals("", devMode)) {
-            return outPutPath;
-        } else {
-            return devMode;
-        }
+    protected static String getTemplatePath() {
+        return TemplatePlugin.class.getResource("/").getFile();
     }
 
     /**

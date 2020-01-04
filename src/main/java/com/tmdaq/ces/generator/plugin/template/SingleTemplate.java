@@ -1,5 +1,7 @@
 package com.tmdaq.ces.generator.plugin.template;
 
+import com.tmdaq.ces.generator.api.Const;
+import com.tmdaq.ces.generator.api.Field;
 import com.tmdaq.ces.generator.api.Mode;
 import freemarker.template.TemplateException;
 import org.mybatis.generator.api.IntrospectedTable;
@@ -11,6 +13,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import static com.tmdaq.ces.generator.api.Const.PATH;
@@ -18,6 +21,7 @@ import static com.tmdaq.ces.generator.api.Mode.SINGLE;
 import static com.tmdaq.ces.generator.api.SystemUtil.getInstance;
 import static java.io.File.separator;
 import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toSet;
 
 public class SingleTemplate extends TemplatePlugin {
     public SingleTemplate() {
@@ -81,10 +85,12 @@ public class SingleTemplate extends TemplatePlugin {
                     } else {
                         packageName = data.get("controllerPackageName").toString();
                     }
-                    outPath = Stream.of(getOutPutPath(), packageName.replace(".", separator), realName).collect(joining(separator));
+                    outPath = Stream.of(Const.getOutPath(), packageName.replace(".", separator), realName).collect(joining(separator));
                 } else {
-                    outPath = Stream.of(getOutPutPath(), realName).collect(joining(separator));
+                    outPath = Stream.of(Const.getOutPath(), realName).collect(joining(separator));
                 }
+                Set<Field> fieldSet = introspectedTable.getAllColumns().stream().map(Field::toField).collect(toSet());
+                data.put("fieldSet", fieldSet);
                 File file = new File(outPath);
                 if (!file.getParentFile().exists()) {
                     file.getParentFile().mkdirs();
