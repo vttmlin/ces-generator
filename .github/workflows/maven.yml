@@ -30,3 +30,21 @@ jobs:
           from: GitHub Actions
           # Optional content type:
           content_type: text/html
+      - name: send email action
+        uses: AlexisMateo/sendmail-action@5
+        with:
+          smtp-server: smtp.tmdaq.com
+          smtp-server-port: 465
+          auth-user: ${{ secrets.MAIL_USERNAME }}
+          auth-password: ${{ secrets.MAIL_PASSWORD }}
+          subject: ${{github.repository}} build result
+          # The message to be sended
+          body: ${{github.repository}} build success
+          # where is the message from
+          from: GitHub Actions
+          # Who to send
+          to: vttmlin@tmdaq.com
+          # use secure connection?
+          is-tls: true
+          # send commit message as body
+          # commit-message: # optional
