@@ -1,21 +1,23 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="ces-generator">
-    <test name="single">
-        <parameter name="mode" value="SINGLE"/>
-        <classes>
-            <class name="com.tmdaq.ces.generator.plugin.template.SingleTemplateTest">
-                <methods>
-                    <include name="testGenerator"/>
-                </methods>
-            </class>
-        </classes>
-    </test>
+    <!--<test name="single">-->
+    <!--<parameter name="mode" value="SINGLE"/>-->
+    <!--<parameter name="path.T_XFZX_SW_SWDJ" value="swdj"/>-->
+    <!--<classes>-->
+    <!--<class name="com.tmdaq.ces.generator.plugin.template.SingleTemplateTest">-->
+    <!--<methods>-->
+    <!--<include name="testGenerator"/>-->
+    <!--</methods>-->
+    <!--</class>-->
+    <!--</classes>-->
+    <!--</test>-->
     <test name="dual">
         <parameter name="mode" value="DUAL"/>
         <classes></classes>
     </test>
     <test name="workflow">
         <parameter name="mode" value="WORKFLOW"/>
+        <parameter name="path.T_XFZX_YLGL_LBCRD_LC" value="lbcrdLc"/>
         <classes>
             <class name="com.tmdaq.ces.generator.plugin.template.WorkFlowTemplateTest">
                 <methods>

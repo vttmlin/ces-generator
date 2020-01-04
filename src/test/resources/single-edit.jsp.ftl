@@ -17,32 +17,7 @@
         <%-- ${key} ${otherColumns['${key}']} --%>
 </#list>
 </#if>
-
-    <!-- 子表字段 -->
-    <#if map??>
-        <#list map?keys as key>
-            <#list map?keys as key>
-            <#list map['${key}']['fieldList'] as fieldInfo>
-        <%-- 字段名称 ${fieldInfo.fieldName} 字段类型 ${fieldInfo.fieldType} 字段注释 ${fieldInfo.columnRemark} --%>
-            </#list>
-            </#list>
-        </#list>
-    </#if>
         <table class="table table-condensed table-bordered table-fixed">
-        <#-- 遍历普通字段 -->
-            <#if baseColumns??>
-                <#list baseColumns?keys as key>
-                    <#if baseColumns[key]=='Date'>
-                <!--字段名称 ${key} 字段类型  字段注释  -->
-                    </#if>
-                </#list>
-            </#if>
-        <#-- 遍历blob -->
-            <#if blobColumns??>
-                <#list blobColumns?keys as key>
-                <!--字段名称 ${key} 字段类型  字段注释  -->
-                </#list>
-            </#if>
             <tr>
             <cui:input id="xm" type="hidden" name="xm"/>
             <cui:input id="jbxxId" type="hidden" name="jbxxId"/>
@@ -204,22 +179,22 @@
             </div>
     </cui:form>
     <div class="dialog-buttons">
-        <cui:button icons="iconSave" countdown="true" id="saveBtn" label="保存" onClick="demoEdit.save"></cui:button>
+        <cui:button icons="iconSave" countdown="true" id="saveBtn" label="保存" onClick="${path}Edit.save"></cui:button>
         <cui:button icons="iconDelete" label="关闭" onClick="closeDialog"/>
     </div>
 </div>
 </body>
 <script type="text/javascript">
-    var demoEdit = (function() {
+    var ${path}Edit = (function () {
         return {
             form : $("#addDialogForm"),
             init : function() {
                 if ("${r'${id}'}") {
-                    demoEdit.loadForm("${r'${id}'}", "${r'${readonly}'}");
+                    ${path}Edit.loadForm("${r'${id}'}", "${r'${readonly}'}");
                 }else {
                     $("#cCjRq").datepicker("setValue","<%=DateUtils.getCurrentDate(false)%>");
                     $("#cCjr").val(top.user.userName);
-                    demoEdit._init();
+                    ${path}Edit._init();
                 }
             },
             _init: function () {
@@ -229,7 +204,7 @@
             },
             loadForm : function (id, readonly) {
                 if (readonly) {
-                    demoEdit.readonly();
+                    ${path}Edit.readonly();
                     common.loadAffix("affixUpload", id, true);
                     $("#affixUpload_uploader").remove();
                 } else {
@@ -237,18 +212,18 @@
                 }
                     // // 不需要附件上传
                     // if (readonly) {
-                    //     demoEdit.readonly();
+                //     ${path}Edit.readonly();
                     // }
                 loadForm('addDialogForm', "${r'${ctx}'}/${path}/find?id=" + id, function(data) {
                 });
             },
             readonly : function () {
-                demoEdit.form.form("setIsLabel",true);
+                ${path}Edit.form.form("setIsLabel", true);
                 $("#saveBtn").hide();
             },
             save : function() {
-                if (demoEdit.form.form("valid")) {
-                    var formData = demoEdit.form.form("formData", false);
+                if (${path}Edit.form.form("valid")) {
+                    var formData = ${path}Edit.form.form("formData", false);
                     $.loading({text:"正在保存中，请稍后…"});
                     $.ajax({
                         type : 'post',
@@ -259,8 +234,10 @@
                             $.loading("hide");
                             if (data.status === "success") {
                                 $.message("保存成功");
-                                demo.dialog.dialog("close");
-                                demo.grid.grid("reload");
+                            ${path}.
+                                dialog.dialog("close");
+                            ${path}.
+                                grid.grid("reload");
                             } else {
                                 $.alert("保存失败");
                             }
@@ -276,7 +253,7 @@
             'user': top.user
         };
         common.initXmAutoComplete('#xm', '#addDialogForm', option);
-        demoEdit.init();
+        ${path}Edit.init();
     });
 
 </script>

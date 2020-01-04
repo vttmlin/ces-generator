@@ -47,9 +47,9 @@
                     <cui:input id="xm" name="xm" componentCls="form-control"/>
                 </td>
                 <td rowspan="2" style="width:25%;text-align: center;">
-                    <cui:button onClick="demo.search" label="查询"/>
-                    <cui:button onClick="demo.more" label="更多"/>
-                    <cui:button onClick="demo.reset" label="重置"/>
+                    <cui:button onClick="${path}.search" label="查询"/>
+                    <cui:button onClick="${path}.more" label="更多"/>
+                    <cui:button onClick="${path}.reset" label="重置"/>
                 </td>
             </tr>
             <tr class="moreCondition" style="display: none;">
@@ -77,7 +77,7 @@
             </tr>
         </table>
     </cui:form>
-    <cui:grid id="demoGrid" width="auto" multiselect="true" fitStyle="fill">
+    <cui:grid id="${path}Grid" width="auto" multiselect="true" fitStyle="fill">
         <cui:gridCols>
             <cui:gridCol name="id" hidden="true"/>
             <cui:gridCol align="center" name="jyId" frozen="true" sortable="false" revertCode="true"
@@ -86,13 +86,18 @@
                          revertCode="true" formatoptions="{'data':combobox_jq}">监区</cui:gridCol>
             <cui:gridCol align="center" name="xm" sortable="false" frozen="true" formatter="setXmLink">姓名</cui:gridCol>
             <cui:gridCol align="center" name="bh" sortable="false" frozen="true">编号</cui:gridCol>
-    <#if allColumnsRemarks??>
-        <#list allColumnsRemarks?keys as key>
-            <%-- <cui:gridCol name="${key}" sortable="false">${allColumnsRemarks['${key}']} </cui:gridCol> --%>
+            <%-- 在这个地方会枚举出常用的字段属性 请一定要认真检查属性是否与你想要的属性相同 ！！！ --%>
+    <#if fieldSet??>
+        <#list fieldSet as field>
+            <%--
+            <cui:gridCol name="${field.name}" sortable="false">${field.remarks}</cui:gridCol>
+            --%>
+            <%-- 数据类型: ${field.type}  数据长度 ${field.length} 字段名 ${field.jdbcName} 字段类型 ${field.jdbcType}--%>
+
         </#list>
     </#if>
         </cui:gridCols>
-        <cui:gridPager gridId="demoGrid" toolbarOptions="onClick:'demo.clickHandler',
+        <cui:gridPager gridId="${path}Grid" toolbarOptions="onClick:'${path}.clickHandler',
 			data:[{
 				'id': 'add',
 				'label': '新增',
@@ -117,26 +122,33 @@
     </cui:grid>
 </div>
 <div>
-    <cui:dialog id="demoDialog" position="center" reLoadOnOpen="true" modal="true" autoOpen="false" width="1000"
+    <cui:dialog id="${path}Dialog" position="center" reLoadOnOpen="true" modal="true" autoOpen="false" width="1000"
                 height="500" autoDestroy="true"/>
 </div>
 
 </body>
 <script type="text/javascript">
-    var demo = (function () {
+    var ${path} =
+    (function () {
         return {
             editUrl: "${r'${ctx}'}/${path}?_url=/${path}/edit",  // Todo 这个URL 需要手动去修改
-            dialog: $("#demoDialog"),
-            grid: $("#demoGrid"),
+            dialog: $("#${path}Dialog"),
+            grid: $("#${path}Grid"),
             form: $("#queryForm"),
             clickHandler: function (event, ui) {
-                demo[ui.id]();
+                ${path}[ui.id]();
             },
             search: function () {
-                demo.grid.grid("option", "url", "${r'${ctx}'}/${path}/findList");
-                demo.grid.grid("option", "datatype", "json");
-                demo.grid.grid("option", "postData", demo.form.form("formData", false));
-                demo.grid.grid("reload");
+            ${path}.
+                grid.grid("option", "url", "${r'${ctx}'}/${path}/findList");
+            ${path}.
+                grid.grid("option", "datatype", "json");
+            ${path}.
+                grid.grid("option", "postData", ${path}.form.form("formData", false)
+            )
+                ;
+            ${path}.
+                grid.grid("reload");
             },
             more: function () {
                 var selector = $(".moreCondition");
@@ -150,30 +162,37 @@
                 $("#queryForm").form("clear", {excluded: ["readonly"]});
             },
             add: function () {
-                demo.dialog.dialog("option", {
+            ${path}.
+                dialog.dialog("option", {
                     title: "新增",
-                    url: demo.editUrl
+                    url: ${path}.editUrl
                 });
-                demo.dialog.dialog("open");
+            ${path}.
+                dialog.dialog("open");
             },
             edit: function (show) {
-                var id = demo.grid.grid("option", "selarrrow");
+                var id = ${path}.
+                grid.grid("option", "selarrrow");
                 var title = show ? "查看" : "修改";
                 if (id && id.length === 1) {
-                    demo.dialog.dialog("option", {
+                ${path}.
+                    dialog.dialog("option", {
                         title: title,
-                        url: demo.editUrl+"&id=" + id + "&readonly=" + (show ? "Y" : "")
+                        url: ${path}.editUrl + "&id=" + id + "&readonly=" + (show ? "Y" : "")
                     });
-                    demo.dialog.dialog("open");
+                ${path}.
+                    dialog.dialog("open");
                 } else {
                     $.message({message: "请选择一条" + title + "的数据！", cls: "warning"});
                 }
             },
             show: function () {
-                demo.edit(true);
+            ${path}.
+                edit(true);
             },
             remove: function () {
-                var id = demo.grid.grid("option", "selarrrow");
+                var id = ${path}.
+                grid.grid("option", "selarrrow");
                 if (id) {
                     $.confirm("确认是否删除？", function (r) {
                         if (r) {
@@ -185,7 +204,8 @@
                                 contentType: "application/json",
                                 success: function (data) {
                                     $.message({message: "操作成功！", cls: "success"});
-                                    demo.grid.grid("reload");
+                                ${path}.
+                                    grid.grid("reload");
                                 }
                             });
                         } else {
@@ -205,7 +225,8 @@
         * 监狱监区 根据用户权限的只读
         * */
         common.initJyJq('#jyKey', '#jqKey');
-        demo.search();
+    ${path}.
+        search();
     });
 
 </script>

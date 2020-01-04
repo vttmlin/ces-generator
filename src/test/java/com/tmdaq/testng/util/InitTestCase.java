@@ -13,6 +13,7 @@ import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 import org.testng.internal.ConstructorOrMethod;
+import org.testng.xml.XmlTest;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -31,11 +32,11 @@ public class InitTestCase implements ITestListener {
     public void onStart(ITestContext context) {
         System.setProperty("devMode", "true");
 
+        XmlTest currentXmlTest = context.getCurrentXmlTest();
+
         FileUtils.forceMkdir(new File(Const.getOutPath()));
-//        获取全部参数
-//        context.getCurrentXmlTest().getAllParameters()
-        String modeStr = context.getCurrentXmlTest().getParameter("mode");
-        SystemUtil.getInstance.put("mode", modeStr);
+        String modeStr = currentXmlTest.getParameter("mode");
+        SystemUtil.getConfigMap().putAll(currentXmlTest.getAllParameters());
         Mode mode = Mode.valueOf(String.valueOf(modeStr));
         Connection connection = JdbcUtil.getConnection();
         connection.setAutoCommit(false);
@@ -83,6 +84,6 @@ public class InitTestCase implements ITestListener {
     @Override
     @SneakyThrows
     public void onFinish(ITestContext context) {
-        FileUtils.deleteDirectory(new File(Const.getOutPath()));
+//        FileUtils.deleteDirectory(new File(Const.getOutPath()));
     }
 }

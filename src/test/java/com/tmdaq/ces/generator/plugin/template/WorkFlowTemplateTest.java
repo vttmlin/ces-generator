@@ -15,6 +15,7 @@ import static org.testng.Assert.assertNotNull;
 public class WorkFlowTemplateTest extends BaseTest {
 
     @Test
+//    @TableConfig(tableName = "T_XFZX_YLGL_LBCRD_LC", schema = "XFZX", objectName = "LbcCx")
     @TableConfig(tableName = "T_XFZX_YLGL_LBCRD_LC", schema = "XFZX", objectName = "LbcCx")
     public void testGenerator() throws Exception {
         MyBatisGenerator myBatisGenerator = new MyBatisGenerator(configuration, callback, warnings);
